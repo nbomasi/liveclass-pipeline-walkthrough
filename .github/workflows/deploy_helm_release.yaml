@@ -1,0 +1,57 @@
+name: Publish Helm Chart (Dynamic version)
+
+on:
+  workflow_run:
+    workflows:
+      - "Build and Push Docker Images"
+    types:
+      - completed
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
+      #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      GCP_DEFAULT_REGION: "us-east-1"
+      GCP_STORAGE_BUCKET_NAME: boma-helm-repo
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure GCP credentials
+        uses: actions-hub/gcloud@master
+        with:
+          PROJECT_ID: ${{ env.PROJECT_ID }}
+          key: ${{ env.GCP_API_KEY }}
+          #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.GCP_DEFAULT_REGION }}
+
+      - name: Package Helm Chart
+        run: |
+            cd helm
+            rm -f *.tgz
+            helm package monolith-website
+
+
+      - name: Upload Helm Chart to gcp cloud storage
+        run: |
+            gsutil cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
+
+      - name: Generate or Update Helm Chart Index
+        run: helm repo index --url http://storage.googleapis.com/boma-helm-repo/charts/ .
+
+      - name: Upload Index.yaml to gcp storage
+        run: gsutil cp helm/index.yaml gs://boma-helm-repo/charts/
+
+      - name: Install the Helm gcp storage plugin
+        run: $ helm plugin install https://github.com/viglesiasce/helm-gcs.git
+
+      - name: Configure Helm Repository
+        run: helm repo add monolith-website s3://liveclass-helm-repo/charts
+
+      - name: Push Helm Chart to S3 Repository
+        run: helm s3 push --force helm/monolith-website-0.1.0.tgz monolith-website
