@@ -9,8 +9,8 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_USERNAME: ${{ secrets.secrets_DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.secrets_DOCKER_PASSWORD }}
   appVersion: 1.0.6
 
 jobs:
@@ -32,5 +32,12 @@ jobs:
 
       - name: Build and push monolith Docker image
         run: |
-          docker build -t dareyregistry/monolith:${{ env.appVersion }} .
-          docker push dareyregistry/monolith:${{ env.appVersion }}
+          docker build -t nbomasi/monolith:${{ env.appVersion }} .
+          docker push nbomasi/monolith:${{ env.appVersion }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: nbomasi/monolith:${{ env.appVersion }}
