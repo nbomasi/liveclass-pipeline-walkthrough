@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "monolith-website.fullname" . }}
+  name: {{ include "monolithic-website.fullname" . }}
   labels:
-    {{- include "monolith-website.labels" . | nindent 4 }}
+    {{- include "monolithic-website.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "monolith-website.selectorLabels" . | nindent 4 }}
+    {{- include "monolithic-website.selectorLabels" . | nindent 4 }}

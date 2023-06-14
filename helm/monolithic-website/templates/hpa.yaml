@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "monolith-website.fullname" . }}
+  name: {{ include "monolithic-website.fullname" . }}
   labels:
-    {{- include "monolith-website.labels" . | nindent 4 }}
+    {{- include "monolithic-website.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "monolith-website.fullname" . }}
+    name: {{ include "monolithic-website.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
