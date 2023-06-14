@@ -30,10 +30,10 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Build and push monolith Docker image
-        run: |
-          docker build -t nbomasi/monolith:${{ env.appVersion }} .
-          docker push nbomasi/monolith:${{ env.appVersion }}
+      # - name: Build and push monolith Docker image
+      #   run: |
+      #     docker build -t nbomasi/monolith:${{ env.appVersion }} .
+      #     docker push nbomasi/monolith:${{ env.appVersion }}
       
       - name: Build and push
         uses: docker/build-push-action@v4
