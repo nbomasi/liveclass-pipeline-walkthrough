@@ -28,7 +28,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID }}
           key: ${{ env.GCP_API_KEY }}
           #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.GCP_DEFAULT_REGION }}
+          gcp-region: ${{ env.GCP_DEFAULT_REGION }}
 
       - name: Package Helm Chart
         run: |
