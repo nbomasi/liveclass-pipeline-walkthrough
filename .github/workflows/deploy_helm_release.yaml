@@ -1,4 +1,4 @@
-name: Publish Helm Chart (Dynamic version)
+name: Publish Helm Chart (non_Dynamic version)
 
 on:
   workflow_run:
