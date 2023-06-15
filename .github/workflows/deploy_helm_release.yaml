@@ -16,7 +16,7 @@ jobs:
     #   GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
     #   #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     #   GCP_DEFAULT_REGION: "us-east-1"
-    #   GCP_STORAGE_BUCKET_NAME: boma-helm-repo #####kkkk
+    #   GCP_STORAGE_BUCKET_NAME: boma-helm-repo #####kkkkkkkkkk
 
     env:
           PROJECT_ID: 406700639060
