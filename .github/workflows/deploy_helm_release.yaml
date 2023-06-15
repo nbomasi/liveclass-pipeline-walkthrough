@@ -26,11 +26,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure GCP credentials
-        uses: actions-hub/gcloud@master
-        with:
-          PROJECT_ID: ${{ env.PROJECT_ID }}
-          APPLICATION_CREDENTIALS: ${{ env.APPLICATION_CREDENTIALS }}
+      # - name: Configure GCP credentials
+      #   uses: actions-hub/gcloud@master
+      #   with:
+      #     PROJECT_ID: ${{ env.PROJECT_ID }}
+      #     APPLICATION_CREDENTIALS: ${{ env.APPLICATION_CREDENTIALS }}
 
       - name: "Package Helm Chart"  
         uses: actions-hub/gcloud@master
