@@ -19,7 +19,7 @@ jobs:
     #   GCP_STORAGE_BUCKET_NAME: boma-helm-repo #####kkkkkkkkkkkkkkk
 
     env:
-          #PROJECT_ID: 406700639060
+          PROJECT_ID: useful-song-384921
           APPLICATION_CREDENTIALS: ${{secrets.GCP_API_KEY}}
 
     steps:
