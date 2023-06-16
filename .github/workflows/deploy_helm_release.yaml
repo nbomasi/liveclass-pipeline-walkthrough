@@ -46,9 +46,9 @@ jobs:
       - name: 'Install the Helm gcp storage plugin'
         run: helm plugin install https://github.com/viglesiasce/helm-gcs.git
 
-      # - name: Configure Helm Repository
-      #   uses: 'google-github-actions/upload-cloud-storage@v1'
-      #   run: helm repo add monolith-website gs://boma-helm-repo/charts/
+      - name: Configure Helm Repository
+        #uses: 'google-github-actions/upload-cloud-storage@v1'
+        run: helm repo add monolith-website gs://boma-helm-repo/charts/
 
       - name: Push Helm Chart to gcs Repository
         run: helm gcs push --force helm/monolithic-website-0.1.0.tgz monolithic-website
