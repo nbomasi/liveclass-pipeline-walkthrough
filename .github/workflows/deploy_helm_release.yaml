@@ -37,7 +37,7 @@ jobs:
       #   uses: actions-hub/gcloud@master
       #   with:
       #     PROJECT_ID: ${{ env.PROJECT_ID }}
-      #     APPLICATION_CREDENTIALS: ${{ env.APPLICATION_CREDENTIALS }}
+      #     APPLICATION_CREDENTIALS: ${{ env.APPLICATION_CREDENTIALS }} uuuuuuuuuu
 
       - name: "Package Helm Chart"  
         run: |
