@@ -11,21 +11,10 @@ jobs:
   publish:
     runs-on: ubuntu-latest
 
-    # env:
-    #   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-    #   GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
-    #   #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #   GCP_DEFAULT_REGION: "us-east-1"
-    #   GCP_STORAGE_BUCKET_NAME: boma-helm-repo #####kkkmmmmmuuuuu
-
-    # env:
-    #       PROJECT_ID: "useful-song-384921"
-    #       APPLICATION_CREDENTIALS: ${{secrets.GCP_API_KEY}}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
@@ -33,106 +22,34 @@ jobs:
         with:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
-      # - name: Configure GCP credentials
-      #   uses: actions-hub/gcloud@master
-      #   with:
-      #     PROJECT_ID: ${{ env.PROJECT_ID }}
-      #     APPLICATION_CREDENTIALS: ${{ env.APPLICATION_CREDENTIALS }} uuuuuuuuuu
-
       - name: "Package Helm Chart"  
         run: |
             cd helm
             rm -f *.tgz
             helm package monolithic-website
           
-      
-      - id: 'upload-files'
+      - name: 'Upload Helm Chart to gcp cloud storage'
         uses: 'google-github-actions/upload-cloud-storage@v1'
         with:
           path: 'helm/monolithic-website-0.1.0.tgz'
           destination: 'boma-helm-repo/charts/'
 
-      # - name: "Upload Helm Chart to gcp cloud storage"  
-      #   uses: actions-hub/gcloud@master
-      #    # env:
-      #    #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
-      # #   with:
-      # #     args: cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
-      # #     cli: gsutil
+      - name: Generate or Update Helm Chart Index
+        run: helm repo index --url http://storage.googleapis.com/boma-helm-repo/charts/ .
 
-      - name: "Generate or Update Helm Chart Index"  
-        uses: actions-hub/gcloud@master
-        # env:
-        #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
+      - name: 'Upload index.yaml to gcp cloud storage'
+        uses: 'google-github-actions/upload-cloud-storage@v1'
         with:
-          args: helm repo index --url http://storage.googleapis.com/boma-helm-repo/charts/ .
+          path: 'helm/index.yaml'
+          destination: 'boma-helm-repo/charts/'
 
-      - name: "Upload Index.yaml to gcp storage"  
-        uses: actions-hub/gcloud@master
-        # env:
-        #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
-        with:
-          args: gsutil cp helm/index.yaml gs://boma-helm-repo/charts/
+      - name: 'Install the Helm gcp storage plugin'
+        run: helm plugin install https://github.com/viglesiasce/helm-gcs.git
 
-      - name: "Install the Helm gcp storage plugin"  
-        uses: actions-hub/gcloud@master
-        # env:
-        #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
-        with:
-          args: helm plugin install https://github.com/viglesiasce/helm-gcs.git
+      - name: Configure Helm Repository
+        run: helm repo add monolith-website gs://boma-helm-repo/charts/
 
-      - name: "Configure Helm Repository"  
-        uses: actions-hub/gcloud@master
-        # env:
-        #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
-        with:
-          args: helm repo add monolith-website s3://liveclass-helm-repo/charts
+      - name: Push Helm Chart to gcs Repository
+        run: helm gcs push --force helm/monolithic-website-0.1.0.tgz monolithic-website
 
-      - name: Push Chart To Repository
-        uses: Bigelow-Systems/gcs-push-chart@v1
-        with:
-          # GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          # GCP_PROJECT_ID: my-project-id
-          GCS_BUCKET_NAME: boma-helm-repo
-          PACKAGED_CHART_FOLDER: './helm'
-
-      # - name: "Push Helm Chart to S3 Repository"  
-      #   uses: actions-hub/gcloud@master
-      #   # env:
-      #   #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
-      #   with:
-      #     args: helm s3 push --force helm/monolith-website-0.1.0.tgz monolith-website
       
-      # - name: Configure GCP credentials
-      #   uses: actions-hub/gcloud@master
-      #   with:
-      #     PROJECT_ID: ${{ env.PROJECT_ID }}
-      #     key: ${{ env.GCP_API_KEY }}
-      #     #aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     gcp-region: ${{ env.GCP_DEFAULT_REGION }}
-
-      # - name: Package Helm Chart
-      #   run: |
-      #       cd helm
-      #       rm -f *.tgz
-      #       helm package monolith-website
-
-
-      # - name: Upload Helm Chart to gcp cloud storage
-      #   run: |
-      #       gsutil cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
-
-      # - name: Generate or Update Helm Chart Index
-      #   run: helm repo index --url http://storage.googleapis.com/boma-helm-repo/charts/ .
-
-      # - name: Upload Index.yaml to gcp storage
-      #   run: gsutil cp helm/index.yaml gs://boma-helm-repo/charts/
-
-      # - name: Install the Helm gcp storage plugin
-      #   run: $ helm plugin install https://github.com/viglesiasce/helm-gcs.git
-
-      # - name: Configure Helm Repository
-      #   run: helm repo add monolith-website s3://liveclass-helm-repo/charts
-
-      # - name: Push Helm Chart to S3 Repository
-      #   run: helm s3 push --force helm/monolith-website-0.1.0.tgz monolith-website
