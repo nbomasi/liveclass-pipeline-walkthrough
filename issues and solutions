@@ -11,3 +11,5 @@ helm repo index --url http://storage.googleapis.com/boma-helm-repo/charts/ .
 to copy files to bucket:
 
 gsutil cp *.txt gs://my-bucket
+
+https://github.com/google-github-actions/auth/blob/main/docs/TROUBLESHOOTING.md#aggressive-replacement
