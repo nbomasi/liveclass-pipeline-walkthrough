@@ -1,0 +1,13 @@
+Authenticating gcp credentials: https://github.com/marketplace/actions/authenticate-to-google-cloud
+
+ithic-website-0.1.0.tgz gs://boma-helm-repo
+
+gsutil cp index.yaml gs://boma-helm-repo/charts/
+
+API_key: AIzaSyDQi0wwhttp://storage.googleapis.com/BUCKET_NAME/OBJECT_NAME
+
+helm repo index --url http://storage.googleapis.com/boma-helm-repo/charts/ .
+
+to copy files to bucket:
+
+gsutil cp *.txt gs://my-bucket

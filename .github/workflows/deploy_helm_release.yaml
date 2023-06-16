@@ -49,6 +49,7 @@ jobs:
               cd helm
               rm -f *.tgz
               helm package monolith-website
+          cli: bash
       
       - name: "Upload Helm Chart to gcp cloud storage"  
         uses: actions-hub/gcloud@master
