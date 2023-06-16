@@ -40,15 +40,10 @@ jobs:
       #     APPLICATION_CREDENTIALS: ${{ env.APPLICATION_CREDENTIALS }}
 
       - name: "Package Helm Chart"  
-        uses: actions-hub/gcloud@master
-        # env:
-        #   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-        #   APPLICATION_CREDENTIALS: ${{secrets.GCP_API_KEY}}
-        with:
-          cli: |
-              cd helm
-              rm -f *.tgz
-              helm package monolith-website
+        run: |
+            cd helm
+            rm -f *.tgz
+            helm package monolith-website
           
       
       - id: 'upload-files'
