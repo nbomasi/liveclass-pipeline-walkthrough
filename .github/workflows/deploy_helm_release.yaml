@@ -55,15 +55,15 @@ jobs:
         uses: 'google-github-actions/upload-cloud-storage@v1'
         with:
           path: 'helm/monolith-website-0.1.0.tgz'
-          destination: 'boma-helm-repo/charts/
+          destination: 'boma-helm-repo/charts/'
 
       # - name: "Upload Helm Chart to gcp cloud storage"  
       #   uses: actions-hub/gcloud@master
-      #   # env:
-      #   #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
-      #   with:
-      #     args: cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
-      #     cli: gsutil
+      #    # env:
+      #    #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
+      # #   with:
+      # #     args: cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
+      # #     cli: gsutil
 
       - name: "Generate or Update Helm Chart Index"  
         uses: actions-hub/gcloud@master
