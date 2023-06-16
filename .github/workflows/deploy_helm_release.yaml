@@ -56,7 +56,7 @@ jobs:
         # env:
         #   PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID_B}}
         with:
-          args: gsutil cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
+          args: cp helm/monolithic-website-0.1.0.tgz gs://boma-helm-repo/charts/
           cli: gsutil
 
       - name: "Generate or Update Helm Chart Index"  
