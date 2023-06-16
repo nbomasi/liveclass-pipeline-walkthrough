@@ -45,7 +45,7 @@ jobs:
         #   PROJECT_ID: ${{ secrets.PROJECT_ID }}
         #   APPLICATION_CREDENTIALS: ${{secrets.GCP_API_KEY}}
         with:
-          args: |
+          run: |
               cd helm
               rm -f *.tgz
               helm package monolith-website
